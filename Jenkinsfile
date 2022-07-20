@@ -4,7 +4,7 @@ pipeline
     agent any
     stages
     {
-        stage('continuous Download')
+        stage('continuous Download_Loans')
         {
             steps
             {
@@ -14,7 +14,7 @@ pipeline
                 }
             }
         }
-        stage('continuous Built')
+        stage('continuous Built_Loans')
          {
              steps
              {
@@ -24,38 +24,4 @@ pipeline
                  }
              }
          }
-         stage('continuous Deployment')
-         {
-             steps
-             {
-                 script
-                 {
-                     cicd.newDeploy()
-                 }
-             }
-         }
-        
-        stage('continuous Testing')
-        {
-            steps
-            {
-              script
-                {
-                  cicd.newGit("https://github.com/intelliqittrainings/FunctionalTesting.git")
-                  cicd.newTest()
-                  
-                }
-            }
-        }
-         stage('continuous delivery')
-         {
-             steps
-             {
-                 script
-                 {
-                     cicd.newDel()
-                 }
-             }
-         }
-    }
 }
