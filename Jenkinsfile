@@ -10,7 +10,7 @@ pipeline
             {
               script
                 {
-                  cicd.newGit("https://github.com/srinath111/mymaven.git")
+                  cicd.newGit("https://github.com/srinath111/maven.git")
                 }
             }
         }
