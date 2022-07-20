@@ -1,25 +1,61 @@
-node('master') 
+@Library('srilibrary')_
+pipeline
 {
-  stage('ContinuousDownload') 
-  {
-    git 'https://github.com/srinath111/maven.git'
-  } 
-  stage('ContinuousBuild') 
-  {
-    sh 'mvn package'
-  } 
-  stage('ContinuousDeployment') 
-  {
-    sh 'scp /var/lib/jenkins/workspace/Pipeline/webapp/target/webapp.war vagrant@10.10.10.32:/var/lib/tomcat7/webapps/qaenv.war'
-  }
-  stage('ContinuousTesting') 
-  {
-    git 'https://github.com/selenium-saikrishna/TestingOnLinux.git'
-    sh 'java -jar  /var/lib/jenkins/workspace/Pipeline/testing.jar'
-  }
-  stage('ContinuousDelivery') 
-  {
-      input message: 'Waiting for approval from DM', submitter: 'Srinivas'
-    sh 'scp /var/lib/jenkins/workspace/Pipeline/webapp/target/webapp.war vagrant@10.10.10.33:/var/lib/tomcat7/webapps/prodenv.war'
-  }
- }
+    agent any
+    stages
+    {
+        stage('continuous Download')
+        {
+            steps
+            {
+              script
+                {
+                  cicd.newGit("https://github.com/srinath111/mymaven.git")
+                }
+            }
+        }
+        stage('continuous Built')
+         {
+             steps
+             {
+                 script
+                 {
+                     cicd.newmaven()
+                 }
+             }
+         }
+         stage('continuous Deployment')
+         {
+             steps
+             {
+                 script
+                 {
+                     cicd.newDeploy()
+                 }
+             }
+         }
+        
+        stage('continuous Testing')
+        {
+            steps
+            {
+              script
+                {
+                  cicd.newGit("https://github.com/intelliqittrainings/FunctionalTesting.git")
+                  cicd.newTest()
+                  
+                }
+            }
+        }
+         stage('continuous delivery')
+         {
+             steps
+             {
+                 script
+                 {
+                     cicd.newDel()
+                 }
+             }
+         }
+    }
+}
